@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { Button, Container, Stack } from "@mui/material";
 import logoDark from "../assets/images/fiverrr-logo-dark.svg";
@@ -8,6 +8,7 @@ import UserProfile from "./UserProfile";
 
 const Navbar = () => {
   const [navbarActive, setNavbarActive] = useState(false);
+  const { pathname } = useLocation();
 
   const checkScroll = () => {
     window.scrollY > 0 ? setNavbarActive(true) : setNavbarActive(false);
@@ -18,20 +19,23 @@ const Navbar = () => {
     return () => {
       window.removeEventListener("scroll", checkScroll);
     };
-  }, [navbarActive]);
+  }, []);
 
   const currentUser = {
     id: 1,
     username: "Nata Slut",
     isSeller: true,
   };
-
   return (
-    <Wrapper className={navbarActive ? "navbarActive" : ""}>
-      <div className="upperNav">
+    <Wrapper>
+      <div
+        className={`upperNav ${
+          navbarActive || pathname !== "/" ? "navbarActive" : ""
+        }`}
+      >
         <Container maxWidth="lg" className="upperNavContainer">
           <div className="logo">
-            {navbarActive ? (
+            {navbarActive || pathname !== "/" ? (
               <Link to="/">
                 <img src={logoDark} alt="Fiverrr Logo" />
               </Link>
@@ -42,7 +46,9 @@ const Navbar = () => {
             )}
           </div>
           <div
-            className={`navLinks ${navbarActive ? "textDark" : "textLight"}`}
+            className={`navLinks ${
+              navbarActive || pathname !== "/" ? "textDark" : "textLight"
+            }`}
           >
             <Stack direction="row" orientation="vertical" spacing={2}>
               <Button
@@ -83,7 +89,11 @@ const Navbar = () => {
               <Button
                 variant="text"
                 color="inherit"
-                sx={!navbarActive ? { color: "#FFFFFF" } : ""}
+                sx={
+                  navbarActive || pathname !== "/"
+                    ? { color: "#111" }
+                    : { color: "#FFFFFF" }
+                }
                 onClick={() => {}}
               >
                 Sign In
@@ -103,6 +113,7 @@ const Navbar = () => {
                   <UserProfile
                     currentUser={currentUser}
                     navbarActive={navbarActive}
+                    pathname={pathname}
                   />
                 </div>
               )}
@@ -110,70 +121,42 @@ const Navbar = () => {
           </div>
         </Container>
       </div>
-      <hr />
-      {navbarActive && (
-        <div className="lowerNav">
-          <Container maxWidth="lg" className="lowerNavContainer">
-            <div className="navLinksBottom">
-              <Stack
-                direction="row"
-                orientation="vertical"
-                spacing={2}
-                sx={{ justifyContent: "space-between" }}
-              >
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/a"
-                >
-                  Graphics & Design
-                </Button>
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/b"
-                >
-                  Digital Marketing
-                </Button>
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/c"
-                >
-                  Writing & Translation
-                </Button>
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/d"
-                >
-                  Video & Animation
-                </Button>
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/e"
-                >
-                  Music & Audio
-                </Button>
-                <Button
-                  variant="text"
-                  color="inherit"
-                  component={NavLink}
-                  to="/f"
-                >
-                  Programming & Tech
-                </Button>
-              </Stack>
-            </div>
-          </Container>
-        </div>
-      )}
+      {navbarActive || pathname !== "/" ? <hr /> : ""}
+      <div
+        className={`lowerNav ${
+          !navbarActive || pathname === "/" ? "" : "lowerNavActive"
+        }`}
+      >
+        <Container maxWidth="lg" className="lowerNavContainer">
+          <div className="navLinksBottom">
+            <Stack
+              direction="row"
+              orientation="vertical"
+              spacing={2}
+              sx={{ justifyContent: "space-between" }}
+            >
+              <Button variant="text" component={NavLink} to="/">
+                Graphics & Design
+              </Button>
+              <Button variant="text" component={NavLink} to="/">
+                Digital Marketing
+              </Button>
+              <Button variant="text" component={NavLink} to="/">
+                Writing & Translation
+              </Button>
+              <Button variant="text" component={NavLink} to="/">
+                Video & Animation
+              </Button>
+              <Button variant="text" component={NavLink} to="/">
+                Music & Audio
+              </Button>
+              <Button variant="text" component={NavLink} to="/">
+                Programming & Tech
+              </Button>
+            </Stack>
+          </div>
+        </Container>
+      </div>
     </Wrapper>
   );
 };
@@ -182,6 +165,7 @@ const Wrapper = styled.nav`
   &.navbarActive {
     position: sticky;
     top: 0px;
+    z-index: 60000;
     .upperNav {
       background-color: #ffffff;
       .navLinks {
@@ -202,23 +186,10 @@ const Wrapper = styled.nav`
         }
       }
     }
-    .lowerNav {
-      background-color: #f8f8f8;
-      .lowerNavContainer {
-        .navLinksBottom {
-          a {
-            font-weight: 300;
-            &.active {
-              color: #49cb8f;
-            }
-          }
-        }
-      }
-    }
   }
   .upperNav {
     background-color: #138550;
-    transition: 0.5s all ease;
+    transition: all 0.3s ease-in !important;
     .upperNavContainer {
       display: flex;
       justify-content: space-between;
@@ -252,14 +223,17 @@ const Wrapper = styled.nav`
     }
   }
   .lowerNav {
-    background-color: #5fe9a8;
+    display: none;
+    background-color: #ffffff;
+    transition: all 1s ease-in;
+    &.lowerNavActive {
+      display: block;
+    }
     .lowerNavContainer {
       .navLinksBottom {
         a {
           font-weight: 300;
-          &.active {
-            color: #ffffff;
-          }
+          color: #111111;
         }
       }
     }

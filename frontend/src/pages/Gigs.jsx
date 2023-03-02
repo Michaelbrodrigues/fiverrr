@@ -5,6 +5,7 @@ const Gigs = () => {
   return (
     <Wrapper>
       <h2 className="title">Gigs</h2>
+      
     </Wrapper>
   );
 };

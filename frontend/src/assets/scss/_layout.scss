@@ -1,0 +1,8 @@
+.mainApp {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .mainBody {
+    flex: auto;
+  }
+}

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 const useToggle = () => {
-  const [el, setEl] = useState(null);
-  const open = Boolean(el);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    setEl(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setEl(null);
+    setAnchorEl(null);
   };
-  return { el, open, handleClick, handleClose };
+  return { anchorEl, open, handleClick, handleClose };
 };
 
 export default useToggle;
