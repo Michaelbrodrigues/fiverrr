@@ -8,6 +8,7 @@ import Messages from "./Messages";
 import MyGigs from "./MyGigs";
 import Orders from "./Orders";
 import Register from "./Register";
+import FiverrrBusiness from "./FiverrrBusiness";
 
 export {
   Add,
@@ -20,4 +21,5 @@ export {
   MyGigs,
   Orders,
   Register,
+  FiverrrBusiness,
 };

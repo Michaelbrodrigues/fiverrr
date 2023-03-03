@@ -17,12 +17,20 @@ import {
 } from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 
-const UserProfile = ({ currentUser }) => {
+const UserProfile = ({ currentUser, navbarActive, pathname }) => {
   const { anchorEl, open, handleClick, handleClose } = useToggle();
 
   return (
     <Box sx={{ px: 1 }}>
-      <Button id="basic-button" onClick={handleClick} sx={{ color: "#424242" }}>
+      <Button
+        id="basic-button"
+        onClick={handleClick}
+        sx={
+          navbarActive || pathname !== "/"
+            ? { color: "#424242" }
+            : { color: "#FFFFFF" }
+        }
+      >
         <PersonIcon sx={{ color: "inherit", fontSize: 24, mr: 0.75 }} />
         <span>{currentUser.username}</span>
       </Button>

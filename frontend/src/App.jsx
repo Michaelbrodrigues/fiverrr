@@ -15,6 +15,7 @@ import {
   Gigs,
   Home,
   Login,
+  FiverrrBusiness,
   Message,
   Messages,
   MyGigs,
@@ -74,6 +75,10 @@ function App() {
         {
           path: "/message/:id",
           element: <Message />,
+        },
+        {
+          path: "/business",
+          element: <FiverrrBusiness />,
         },
       ],
     },
